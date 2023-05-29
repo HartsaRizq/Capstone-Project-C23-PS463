@@ -5,13 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.wearit.Clothes
 import com.dicoding.wearit.R
 import com.dicoding.wearit.databinding.ActivityUploadBinding
-import com.dicoding.wearit.ui.favorite.InnerwearFragment
-import com.dicoding.wearit.ui.favorite.OuterwearFragment
-import com.dicoding.wearit.ui.favorite.PantsFragment
 
 class UploadActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUploadBinding
@@ -36,16 +32,16 @@ class UploadActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_outerwear -> {
-                val outerwearIntent = Intent(this, OuterwearFragment::class.java)
-                startActivity(outerwearIntent)
+                val outerwearActivity = Intent(this, OuterwearActivity::class.java)
+                startActivity(outerwearActivity)
             }
             R.id.btn_innerwear -> {
-                val innerwearIntent = Intent(this, InnerwearFragment::class.java)
-                startActivity(innerwearIntent)
+                val innerwearActivity = Intent(this, InnerwearActivity::class.java)
+                startActivity(innerwearActivity)
             }
             R.id.btn_pants -> {
-                val pantsIntent = Intent(this, PantsFragment::class.java)
-                startActivity(pantsIntent)
+                val pantsActivity = Intent(this, PantsActivity::class.java)
+                startActivity(pantsActivity)
             }
         }
     }

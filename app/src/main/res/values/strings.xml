@@ -18,6 +18,12 @@
     <string name="submit">Submit</string>
     <string name="pants">Pants</string>
     <string name="five_items">(5 Items)</string>
+    <string name="upload_outerwear">Upload Your Outerwear</string>
+    <string name="upload_innerwear">Upload Your Innerwear</string>
+    <string name="upload_pants">Upload Your Pants</string>
+    <string name="wait">Please Wait</string>
+    <string name="recognizing">Recognizing images</string>
+    <string name="recommendating">Collecting the best outfit recommendation for you</string>
 
     <integer-array name="data_photo">
         <item>@drawable/ahmad_dahlan</item>
