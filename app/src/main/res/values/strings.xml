@@ -6,6 +6,28 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="introduction">Introduction to this app</string>
+    <string name="recommendation">Get Recommendation</string>
+    <string name="upload_clothes">Upload your clothes</string>
+    <string name="five_clothes">(5 clothes for each category)</string>
+
+    <string name="description">Lorep ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorep ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorep ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</string>
+    <string name="outerwear">Outerwear</string>
+    <string name="innerwear">Innerwear</string>
+    <string name="submit">Submit</string>
+    <string name="pants">Pants</string>
+    <string name="five_items">(5 Items)</string>
+
+    <integer-array name="data_photo">
+        <item>@drawable/ahmad_dahlan</item>
+        <item>@drawable/ahmad_yani</item>
+        <item>@drawable/bung_tomo</item>
+        <item>@drawable/gatot_subroto</item>
+        <item>@drawable/ki_hadjar_dewantara</item>
+        <item>@drawable/mohammad_hatta</item>
+        <item>@drawable/sudirman</item>
+        <item>@drawable/sukarno</item>
+        <item>@drawable/supomo</item>
+    </integer-array>
 </resources>
