@@ -1,13 +1,18 @@
 package com.dicoding.wearit
 
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dicoding.wearit.databinding.ActivityMainBinding
+import android.Manifest
 
 class MainActivity : AppCompatActivity() {
 

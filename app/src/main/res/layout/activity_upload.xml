@@ -113,7 +113,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rv_pants"
-                    android:text="@string/submit"/>
+                    android:text="@string/upload"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
