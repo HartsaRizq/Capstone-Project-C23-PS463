@@ -24,6 +24,7 @@
     <string name="wait">Please Wait</string>
     <string name="recognizing">Recognizing images</string>
     <string name="recommendating">Collecting the best outfit recommendation for you</string>
+    <string name="combination_name">Combination Name</string>
 
     <integer-array name="data_photo">
         <item>@drawable/ahmad_dahlan</item>

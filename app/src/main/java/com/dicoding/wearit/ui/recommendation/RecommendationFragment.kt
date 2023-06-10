@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.dicoding.wearit.databinding.FragmentRecommendationBinding
 
 class RecommendationFragment : Fragment() {
@@ -28,10 +30,21 @@ class RecommendationFragment : Fragment() {
         _binding = FragmentRecommendationBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        recommendationViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val viewPager: ViewPager = binding.viewpager
+        val textList = ArrayList<String>()
+        textList.add("Slide 1")
+        textList.add("Slide 2")
+        textList.add("Slide 3")
+
+        val mViewPagerAdapter = ViewPagerAdapter(requireContext(), textList)
+
+        viewPager.apply {
+            adapter = mViewPagerAdapter
+            setPageTransformer(ViewPager2.PageTransformer { page, position ->
+                // Apply desired transformation to the page
+            })
         }
+
         return root
     }
 
