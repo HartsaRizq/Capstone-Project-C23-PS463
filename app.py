@@ -40,17 +40,13 @@ def upload_image_to_storage(image, filename):
 
 def get_random_image(offset, count):
     collection_ref = db.collection('clothing')
-
-    # Retrieve the total number of documents in the collection
+    
     total = len(collection_ref.get())
 
-    # Calculate the actual count based on the available documents and requested count
     actual_count = min(total - offset, count)
 
-    # Get random documents with pagination
     random_docs = random.sample(list(collection_ref.get()), actual_count)
 
-    # Retrieve image data from the documents
     image_data = []
     for doc in random_docs:
         image_url = doc.get('imageUrl')
@@ -177,8 +173,6 @@ import numpy as np
 
 def generate_combinations(input_array):
 
-    ### Determine which clothing_type is in the categories and where does it fall in the top, bottom, outer
-    ### Intiate the list to keep the classified input
 
     #Parisian
     parisian_tops = ['dress', 'shirt']
@@ -329,9 +323,7 @@ def generate_combinations(input_array):
     grunge_combinations = []
     grunge_combinations_outer = []
 
-    ### Iterate the categorized input and pair it. The combination will return in the order of top, bottom, outer.
-    ### There is 2 loops to create a combination with top and bottom only and top, bottom and outer.
-
+   
     #Parisian
     for top in parisian_input_top:
         for bottom in parisian_input_bottom:
@@ -386,7 +378,6 @@ def generate_combinations(input_array):
         for outerg in grunge_input_outer:
             grunge_combinations_outer.append(combg + outerg)
 
-    ### Return the generated combinations with the output without outer first and with outer after that
     result = delete_dupe(parisian_combinations, parisian_combinations_outer, athelete_combinations, athelete_combinations_outer, street_combinations, street_combinations_outer, business_combinations, business_combinations_outer, calm_combinations, calm_combinations_outer, grunge_combinations, grunge_combinations_outer)
     return result
 
