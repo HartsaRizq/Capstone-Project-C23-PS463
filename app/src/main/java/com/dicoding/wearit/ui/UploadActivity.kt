@@ -33,7 +33,21 @@ import retrofit2.Response
 import java.io.File
 
 class UploadActivity : AppCompatActivity() {
-    private var getFile: File? = null
+    private var outwear1: File? = null
+    private var outwear2: File? = null
+    private var outwear3: File? = null
+    private var outwear4: File? = null
+    private var outwear5: File? = null
+    private var innerwear1: File? = null
+    private var innerwear2: File? = null
+    private var innerwear3: File? = null
+    private var innerwear4: File? = null
+    private var innerwear5: File? = null
+    private var bottomwear1: File? = null
+    private var bottomwear2: File? = null
+    private var bottomwear3: File? = null
+    private var bottomwear4: File? = null
+    private var bottomwear5: File? = null
     private lateinit var binding: ActivityUploadBinding
     private lateinit var currentPhotoPath: String
     private var currentPhotoId: Int = 0
@@ -117,29 +131,72 @@ class UploadActivity : AppCompatActivity() {
             val imageViewId = result.data?.getIntExtra("imageId", currentPhotoId)
             Log.d("Chicken", "Image Tag: $imageViewId")
             val imageView = when (imageViewId) {
-                binding.ivOut1.id -> binding.ivOut1
-                binding.ivOut2.id -> binding.ivOut2
-                binding.ivOut3.id -> binding.ivOut3
-                binding.ivOut4.id -> binding.ivOut4
-                binding.ivOut5.id -> binding.ivOut5
-                binding.ivIn1.id -> binding.ivIn1
-                binding.ivIn2.id -> binding.ivIn2
-                binding.ivIn3.id -> binding.ivIn3
-                binding.ivIn4.id -> binding.ivIn4
-                binding.ivIn5.id -> binding.ivIn5
-                binding.ivPants1.id -> binding.ivPants1
-                binding.ivPants2.id -> binding.ivPants2
-                binding.ivPants3.id -> binding.ivPants3
-                binding.ivPants4.id -> binding.ivPants4
-                binding.ivPants5.id -> binding.ivPants5
+                binding.ivOut1.id -> {
+                    outwear1 = myFile
+                    binding.ivOut1
+                }
+                binding.ivOut2.id -> {
+                    outwear2 = myFile
+                    binding.ivOut2
+                }
+                binding.ivOut3.id -> {
+                    outwear3 = myFile
+                    binding.ivOut3
+                }
+                binding.ivOut4.id -> {
+                    outwear4 = myFile
+                    binding.ivOut4
+                }
+                binding.ivOut5.id -> {
+                    outwear5 = myFile
+                    binding.ivOut5
+                }
+                binding.ivIn1.id -> {
+                    innerwear1 = myFile
+                    binding.ivIn1
+                }
+                binding.ivIn2.id -> {
+                    innerwear2 = myFile
+                    binding.ivIn2
+                }
+                binding.ivIn3.id -> {
+                    innerwear3 = myFile
+                    binding.ivIn3
+                }
+                binding.ivIn4.id -> {
+                    innerwear4 = myFile
+                    binding.ivIn4
+                }
+                binding.ivIn5.id -> {
+                    innerwear5 = myFile
+                    binding.ivIn5
+                }
+                binding.ivPants1.id -> {
+                    bottomwear1 = myFile
+                    binding.ivPants1
+                }
+                binding.ivPants2.id -> {
+                    bottomwear2 = myFile
+                    binding.ivPants2
+                }
+                binding.ivPants3.id -> {
+                    bottomwear3 = myFile
+                    binding.ivPants3
+                }
+                binding.ivPants4.id -> {
+                    bottomwear4 = myFile
+                    binding.ivPants4
+                }
+                binding.ivPants5.id -> {
+                    bottomwear5 = myFile
+                    binding.ivPants5
+                }
                 else -> null
             }
-            myFile.let { file ->
-                getFile = file
-                imageView?.setImageBitmap(BitmapFactory.decodeFile(file.path))
-            }
+            imageView?.setImageBitmap(BitmapFactory.decodeFile(myFile.path))
         }
     }
+
 
     private val launcherIntentGallery = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -149,30 +206,72 @@ class UploadActivity : AppCompatActivity() {
             val imageViewId = result.data?.getIntExtra("imageId", currentPhotoId)
             Log.d("Chicken", "Image Tag: $imageViewId")
             val imageView = when (imageViewId) {
-                binding.ivOut1.id -> binding.ivOut1
-                binding.ivOut2.id -> binding.ivOut2
-                binding.ivOut3.id -> binding.ivOut3
-                binding.ivOut4.id -> binding.ivOut4
-                binding.ivOut5.id -> binding.ivOut5
-                binding.ivIn1.id -> binding.ivIn1
-                binding.ivIn2.id -> binding.ivIn2
-                binding.ivIn3.id -> binding.ivIn3
-                binding.ivIn4.id -> binding.ivIn4
-                binding.ivIn5.id -> binding.ivIn5
-                binding.ivPants1.id -> binding.ivPants1
-                binding.ivPants2.id -> binding.ivPants2
-                binding.ivPants3.id -> binding.ivPants3
-                binding.ivPants4.id -> binding.ivPants4
-                binding.ivPants5.id -> binding.ivPants5
+                binding.ivOut1.id -> {
+                    outwear1 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivOut1
+                }
+                binding.ivOut2.id -> {
+                    outwear2 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivOut2
+                }
+                binding.ivOut3.id -> {
+                    outwear3 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivOut3
+                }
+                binding.ivOut4.id -> {
+                    outwear4 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivOut4
+                }
+                binding.ivOut5.id -> {
+                    outwear5 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivOut5
+                }
+                binding.ivIn1.id -> {
+                    innerwear1 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivIn1
+                }
+                binding.ivIn2.id -> {
+                    innerwear2 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivIn2
+                }
+                binding.ivIn3.id -> {
+                    innerwear3 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivIn3
+                }
+                binding.ivIn4.id -> {
+                    innerwear4 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivIn4
+                }
+                binding.ivIn5.id -> {
+                    innerwear5 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivIn5
+                }
+                binding.ivPants1.id -> {
+                    bottomwear1 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivPants1
+                }
+                binding.ivPants2.id -> {
+                    bottomwear2 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivPants2
+                }
+                binding.ivPants3.id -> {
+                    bottomwear3 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivPants3
+                }
+                binding.ivPants4.id -> {
+                    bottomwear4 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivPants4
+                }
+                binding.ivPants5.id -> {
+                    bottomwear5 = uriToFile(selectedImg, this@UploadActivity)
+                    binding.ivPants5
+                }
                 else -> null
             }
-            selectedImg.let { uri ->
-                val myFile = uriToFile(uri, this@UploadActivity)
-                getFile = myFile
-                imageView?.setImageURI(uri)
-            }
+            imageView?.setImageURI(selectedImg)
         }
     }
+
 
 //    private fun uploadImage() {
 //        if (getFile != null) {
