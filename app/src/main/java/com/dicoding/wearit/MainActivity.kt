@@ -1,18 +1,20 @@
 package com.dicoding.wearit
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dicoding.wearit.databinding.ActivityMainBinding
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var imageIds: LongArray? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_favorite, R.id.navigation_recommendation
@@ -33,11 +33,27 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        var uploaded = intent.getBooleanExtra("uploaded", false)
+        imageIds = intent.getLongArrayExtra("imageIds")
 
-        if (uploaded) {
-            navController.navigate(R.id.navigation_recommendation)
-            uploaded = false
+        Log.d("MainActivity", "imageIds: $imageIds")
+
+        if (imageIds != null && imageIds!!.isNotEmpty()) {
+            val bundle = Bundle().apply {
+                putLongArray("imageIds", imageIds)
+            }
+            imageIds = null // Reset the imageIds to empty
+            navController.navigate(R.id.navigation_recommendation, bundle)
+        }
+
+        navView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    navController.popBackStack(R.id.navigation_home, false)
+                    true
+                }
+                else -> false
+            }
         }
     }
 }
+

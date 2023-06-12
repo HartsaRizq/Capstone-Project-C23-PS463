@@ -1,17 +1,14 @@
 package com.dicoding.wearit.ui
 
-//import com.dicoding.wearit.ApiConfig
-//import com.dicoding.wearit.FileUploadResponse
 import android.Manifest
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
@@ -22,11 +19,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.dicoding.wearit.Database.Image
+import com.dicoding.wearit.Database.ImagesDatabase
 import com.dicoding.wearit.MainActivity
 import com.dicoding.wearit.databinding.ActivityUploadBinding
 import com.dicoding.wearit.databinding.DialogLoadingBinding
+import com.dicoding.wearit.ml.ConvertedModel
+import com.dicoding.wearit.reduceBitmapImage
 import com.dicoding.wearit.uriToBitmap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
+import java.io.FileOutputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 class UploadActivity : AppCompatActivity() {
     private var outwear1: Bitmap? = null
@@ -270,69 +280,141 @@ class UploadActivity : AppCompatActivity() {
         }
     }
 
-    private fun showLoadingDialog() {
-        val builder = AlertDialog.Builder(this)
-        dialogLoadingBinding = DialogLoadingBinding.inflate(layoutInflater)
-        builder.setView(dialogLoadingBinding.root)
-        builder.setCancelable(false)
-        loadingDialog = builder.create()
-        loadingDialog.show()
-    }
+     val label = listOf(
+         "Blazzer", "Coat", "Denim_Jacket", "Dress", "Gym_Jacket", "Hoodie",
+         "Jacket", "Jeans", "Pants", "Polo", "Shirt (Kemeja)", "Shorts",
+         "Skirt", "Sweter", "T-Shirt"
+     )
 
-    private fun uploadImage() {
-        val outwearImages = arrayOf(outwear1, outwear2, outwear3, outwear4, outwear5)
-        val innerwearImages = arrayOf(innerwear1, innerwear2, innerwear3, innerwear4, innerwear5)
-        val bottomwearImages = arrayOf(bottomwear1, bottomwear2, bottomwear3, bottomwear4, bottomwear5)
-        val allImagesNotNull = outwearImages.all { it != null } &&
-                innerwearImages.all { it != null } &&
-                bottomwearImages.all { it != null }
-
-        if (allImagesNotNull) {
-            showLoadingDialog()
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
-                    loadingDialog.dismiss()
-                }
-
-                // Go to MainActivity
-                val intent = Intent(this@UploadActivity, MainActivity::class.java)
-                intent.putExtra("uploaded", true)
-                startActivity(intent)
-                finish()
-            }, 10000) // 10 seconds delay
-        } else {
-            Toast.makeText(this, "Need all images to be inputted", Toast.LENGTH_SHORT).show()
+    fun FloatArray.argmax(): Int {
+        var maxIndex = 0
+        var maxValue = this[maxIndex]
+        for (i in 1 until this.size) {
+            if (this[i] > maxValue) {
+                maxIndex = i
+                maxValue = this[i]
+            }
         }
+        return maxIndex
     }
 
-    /* This function is used for TfLite but I failed to finished it by the time we have left
     private fun uploadImage() {
         val model = ConvertedModel.newInstance(this)
         lateinit var reducedBitmap: Bitmap
 
-        if (outwear1 != null) {
-            reducedBitmap = reduceBitmapImage(outwear1!!)
-            binding.ivOut2.setImageBitmap(reducedBitmap)
-            val resized: Bitmap = Bitmap.createScaledBitmap(reducedBitmap, 224, 224, false)
-            Log.d("Resized", "Width: ${resized.width}, Height: ${resized.height}")
-            val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3)
-            , DataType.FLOAT32)
-            Log.d("TensorBuffer", "Shape: ${inputFeature0.shape.contentToString()}
-            , Size: ${inputFeature0.flatSize}")
-            var tbuffer = TensorImage.fromBitmap(resized)
-            var byteBuffer = tbuffer.buffer
+        val variables = listOf(
+            outwear1, outwear2, outwear3, outwear4, outwear5,
+            innerwear1, innerwear2, innerwear3, innerwear4, innerwear5,
+            bottomwear1, bottomwear2, bottomwear3, bottomwear4, bottomwear5
+        )
 
-            inputFeature0.loadBuffer(byteBuffer)
+        if (variables.all { it != null }) {
+            val database = ImagesDatabase.getInstance(this)
+            val imageDao = database.imageDao()
 
-            val outputs = model.process(inputFeature0)
-            val outputFeature0 = outputs.outputFeature0AsTensorBuffer
+            val dialogBinding = DialogLoadingBinding.inflate(layoutInflater)
+            val alertDialogBuilder = AlertDialog.Builder(this)
+                .setView(dialogBinding.root)
+                .setCancelable(false)
+            val alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
 
-            Log.d("OutputTF", outputFeature0.toString())
-            model.close()
+            CoroutineScope(Dispatchers.IO).launch {
+                imageDao.clearAllTables()
+
+                val imageIds = mutableListOf<Long>()
+
+                for (variable in variables) {
+                    reducedBitmap = reduceBitmapImage(variable!!)
+                    val resized: Bitmap = Bitmap.createScaledBitmap(reducedBitmap, 224, 224, true)
+                    val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.FLOAT32)
+
+                    // Convert resized Bitmap to ByteBuffer
+                    val byteBuffer = ByteBuffer.allocateDirect(1 * 224 * 224 * 3 * 4) // 4 bytes for each float value
+                    byteBuffer.order(ByteOrder.nativeOrder())
+                    val pixels = IntArray(224 * 224)
+                    resized.getPixels(pixels, 0, resized.width, 0, 0, resized.width, resized.height)
+                    for (pixelValue in pixels) {
+                        val r = (pixelValue shr 16 and 0xFF) / 255.0f
+                        val g = (pixelValue shr 8 and 0xFF) / 255.0f
+                        val b = (pixelValue and 0xFF) / 255.0f
+                        byteBuffer.putFloat(r)
+                        byteBuffer.putFloat(g)
+                        byteBuffer.putFloat(b)
+                    }
+                    byteBuffer.rewind()
+
+                    // Load ByteBuffer into inputFeature0
+                    inputFeature0.loadBuffer(byteBuffer)
+
+                    val outputs = model.process(inputFeature0)
+                    val outputFeature0 = outputs.outputFeature0AsTensorBuffer
+
+                    val prediction = outputFeature0.floatArray.argmax()
+                    val predictedLabel = label[prediction]
+
+                    val colorCode = resized.getPixel(resized.width / 2, resized.height / 2)
+                    val red = Color.red(colorCode)
+                    val green = Color.green(colorCode)
+                    val blue = Color.blue(colorCode)
+
+                    val color = when {
+                        red < 50 && green < 50 && blue < 50 -> "Black"
+                        red > 200 && green > 200 && blue > 200 -> "White"
+                        else -> {
+                            val hsv = floatArrayOf(0f, 0f, 0f)
+                            Color.RGBToHSV(red, green, blue, hsv)
+                            when {
+                                hsv[1] < 0.1 -> "Gray"
+                                hsv[0] < 30 || hsv[0] > 330 -> "Red"
+                                hsv[0] < 90 -> "Yellow"
+                                hsv[0] < 150 -> "Green"
+                                hsv[0] < 210 -> "Cyan"
+                                hsv[0] < 270 -> "Blue"
+                                hsv[0] < 330 -> "Magenta"
+                                else -> "Unknown"
+                            }
+                        }
+                    }
+
+                    val imagePath = saveImageToFile(reducedBitmap)
+
+                    val image = Image(predictedLabel = predictedLabel, color = color, imagePath = imagePath)
+
+                    val id = imageDao.insertImage(image)
+                    imageIds.add(id)
+
+                    Log.d("Prediction and Color", "Label: $predictedLabel, Color: $color")
+                }
+
+                model.close()
+
+                val intent = Intent(this@UploadActivity, MainActivity::class.java)
+                intent.putExtra("imageIds", imageIds.toLongArray())
+                startActivity(intent)
+
+                withContext(Dispatchers.Main) {
+                    alertDialog.dismiss()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Need all 15 images to be added first", Toast.LENGTH_SHORT).show()
         }
     }
-    */
+
+    private fun saveImageToFile(bitmap: Bitmap): String {
+        val fileName = "image_${System.currentTimeMillis()}.png"
+        val file = File(getExternalFilesDir(null), fileName)
+        try {
+            FileOutputStream(file).use { out ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return file.absolutePath
+    }
+
 
     /* This function was intentionally to be used if CC finished the task
     private fun uploadImage() {

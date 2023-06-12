@@ -21,5 +21,6 @@
         android:id="@+id/navigation_recommendation"
         android:name="com.dicoding.wearit.ui.recommendation.RecommendationFragment"
         android:label="@string/title_recommendation"
-        tools:layout="@layout/fragment_recommendation" />
+        tools:layout="@layout/fragment_recommendation"
+        />
 </navigation>
