@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.recommendation.RecommendationFragment">
+    tools:context=".ui.recommendation.RecommendationFragment"
+    android:id="@+id/recommendationFragment">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"

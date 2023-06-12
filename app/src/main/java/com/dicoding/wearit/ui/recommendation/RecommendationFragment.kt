@@ -38,12 +38,12 @@ class RecommendationFragment : Fragment() {
 
         val mViewPagerAdapter = ViewPagerAdapter(requireContext(), textList)
 
-        viewPager.apply {
-            adapter = mViewPagerAdapter
-            setPageTransformer(ViewPager2.PageTransformer { page, position ->
-                // Apply desired transformation to the page
-            })
-        }
+//        viewPager.apply {
+//            adapter = mViewPagerAdapter
+//            setPageTransformer(ViewPager2.PageTransformer { page, position ->
+//                // Apply desired transformation to the page
+//            })
+//        }
 
         return root
     }
