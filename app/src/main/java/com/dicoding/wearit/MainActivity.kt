@@ -17,8 +17,8 @@ class MainActivity : AppCompatActivity() {
     private var imageIds: LongArray? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
         imageIds = intent.getLongArrayExtra("imageIds")
 
-        Log.d("MainActivity", "imageIds: $imageIds")
 
         if (imageIds != null && imageIds!!.isNotEmpty()) {
             val bundle = Bundle().apply {
@@ -48,7 +47,16 @@ class MainActivity : AppCompatActivity() {
         navView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
+                    navController.navigate(R.id.navigation_home)
                     navController.popBackStack(R.id.navigation_home, false)
+                    true
+                }
+                R.id.navigation_favorite -> {
+                    navController.navigate(R.id.navigation_favorite)
+                    true
+                }
+                R.id.navigation_recommendation -> {
+                    navController.navigate(R.id.navigation_recommendation)
                     true
                 }
                 else -> false

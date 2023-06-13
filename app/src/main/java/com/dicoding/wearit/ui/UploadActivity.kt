@@ -105,7 +105,6 @@ class UploadActivity : AppCompatActivity() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.resolveActivity(packageManager)
         val imageId = imageView.id
-        Log.d("Ayam", "Image Tag: $imageId")
         com.dicoding.wearit.createTempFile(application).also {
             val photoURI: Uri = FileProvider.getUriForFile(
                 this@UploadActivity,
@@ -126,7 +125,6 @@ class UploadActivity : AppCompatActivity() {
         intent.action = ACTION_GET_CONTENT
         intent.type = "image/*"
         currentPhotoId = imageId
-        intent.putExtra("imageId", currentPhotoId)
         val chooser = Intent.createChooser(intent, "Choose a Picture")
         launcherIntentGallery.launch(chooser)
     }
@@ -136,8 +134,7 @@ class UploadActivity : AppCompatActivity() {
     ) { result ->
         if (result.resultCode == RESULT_OK) {
             val myFile = File(currentPhotoPath)
-            val imageViewId = result.data?.getIntExtra("imageId", currentPhotoId)
-            Log.d("Chicken", "Image Tag: $imageViewId")
+            val imageViewId = currentPhotoId
             val imageView = when (imageViewId) {
                 binding.ivOut1.id -> {
                     outwear1 = BitmapFactory.decodeFile(myFile.path)
@@ -212,7 +209,6 @@ class UploadActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val selectedImg = result.data?.data as Uri
             val imageViewId = result.data?.getIntExtra("imageId", currentPhotoId)
-            Log.d("Chicken", "Image Tag: $imageViewId")
             val imageView = when (imageViewId) {
                 binding.ivOut1.id -> {
                     outwear1 = uriToBitmap(selectedImg, this@UploadActivity)
@@ -383,8 +379,6 @@ class UploadActivity : AppCompatActivity() {
 
                     val id = imageDao.insertImage(image)
                     imageIds.add(id)
-
-                    Log.d("Prediction and Color", "Label: $predictedLabel, Color: $color")
                 }
 
                 model.close()
