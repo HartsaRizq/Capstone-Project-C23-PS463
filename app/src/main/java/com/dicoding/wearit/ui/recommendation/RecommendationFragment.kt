@@ -13,7 +13,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.dicoding.wearit.Database.Image
 import com.dicoding.wearit.Database.ImagesDatabase
 import com.dicoding.wearit.R
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecommendationFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -44,9 +46,12 @@ class RecommendationFragment : Fragment() {
     private fun loadImagesFromRoom() {
         lifecycleScope.launch {
             val imageList = getImageListFromRoom()
-            imageAdapter.updateImageList(imageList)
+            withContext(Dispatchers.Main) {
+                imageAdapter.updateImageList(imageList)
+            }
         }
     }
+
 
     private suspend fun getImageListFromRoom(): List<Image> {
         val database = Room.databaseBuilder(

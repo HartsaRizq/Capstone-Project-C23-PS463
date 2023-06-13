@@ -14,7 +14,7 @@ import com.dicoding.wearit.Database.Image
 import com.dicoding.wearit.R
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
-    private var imageList: List<Image> = emptyList()
+    private var imageList: List<Pair<Image, String>> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image_card, parent, false)
@@ -22,36 +22,47 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val image = imageList[position]
+        val (image, color) = imageList[position]
 
-        // Create a Uri from the image path
         val uri = Uri.parse(image.imagePath)
-
         Glide.with(holder.itemView)
             .load(uri)
             .placeholder(R.drawable.placeholder_image)
-            .into(holder.imageView)
+            .into(holder.imageViewList[position])
 
-        holder.categoryTextView.text = image.predictedLabel
-        holder.colorTextView.text = image.color
+        holder.categoryTextViewList[position].text = image.predictedLabel
+        holder.colorTextViewList[position].text = color
     }
-
-
 
     override fun getItemCount(): Int {
         return imageList.size
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateImageList(newImageList: List<Image>) {
+    fun updateImageList(newImageList: List<Pair<Image, String>>) {
         imageList = newImageList
         notifyDataSetChanged()
     }
 
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.slide_screen_item_iv2)
-        val categoryTextView: TextView = itemView.findViewById(R.id.image1_tv)
-        val colorTextView: TextView = itemView.findViewById(R.id.image1_tv2)
+        val imageViewList: List<ImageView> = listOf(
+            itemView.findViewById(R.id.slide_screen_item_iv1),
+            itemView.findViewById(R.id.slide_screen_item_iv2),
+            itemView.findViewById(R.id.slide_screen_item_iv3)
+            // Add more ImageView references here for additional image views
+        )
+        val categoryTextViewList: List<TextView> = listOf(
+            itemView.findViewById(R.id.image1_tv),
+            itemView.findViewById(R.id.image2_tv),
+            itemView.findViewById(R.id.image3_tv)
+            // Add more TextView references here for additional image views
+        )
+        val colorTextViewList: List<TextView> = listOf(
+            itemView.findViewById(R.id.image1_tv2),
+            itemView.findViewById(R.id.image2_tv2),
+            itemView.findViewById(R.id.image3_tv2)
+            // Add more TextView references here for additional image views
+        )
     }
-
 }
+
