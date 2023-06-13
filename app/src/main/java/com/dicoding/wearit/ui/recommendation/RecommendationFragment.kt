@@ -1,19 +1,18 @@
 package com.dicoding.wearit.ui.recommendation
 
-import android.media.Image
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.dicoding.wearit.Database.ImagesDatabase
 import com.dicoding.wearit.R
 import kotlinx.coroutines.launch
 
 class RecommendationFragment : Fragment() {
     // Declare the ViewPager and adapter variables
-    private lateinit var viewPager: ViewPager
+    private lateinit var viewPager: ViewPager2
     private lateinit var imageAdapter: ImageAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +40,7 @@ class RecommendationFragment : Fragment() {
         }
     }
 
-    private suspend fun getImageListFromRoom(): List<Image> {
+    private suspend fun getImageListFromRoom(): List<com.dicoding.wearit.Database.Image> {
         // Get an instance of your Room database
         val database = Room.databaseBuilder(
             requireContext(),
