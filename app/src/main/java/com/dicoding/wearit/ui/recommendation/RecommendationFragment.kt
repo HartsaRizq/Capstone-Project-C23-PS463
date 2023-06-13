@@ -1,55 +1,59 @@
 package com.dicoding.wearit.ui.recommendation
 
+import android.media.Image
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
-import com.dicoding.wearit.databinding.FragmentRecommendationBinding
+import com.dicoding.wearit.Database.ImagesDatabase
+import com.dicoding.wearit.R
+import kotlinx.coroutines.launch
 
 class RecommendationFragment : Fragment() {
+    // Declare the ViewPager and adapter variables
+    private lateinit var viewPager: ViewPager
+    private lateinit var imageAdapter: ImageAdapter
 
-    private var _binding: FragmentRecommendationBinding? = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+        // Initialize the ViewPager and adapter
+        viewPager = view.findViewById(R.id.viewpager)
+        imageAdapter = ImageAdapter()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val recommendationViewModel =
-            ViewModelProvider(this).get(RecommendationViewModel::class.java)
+        // Set the adapter to the ViewPager
+        viewPager.adapter = imageAdapter
 
-        _binding = FragmentRecommendationBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val viewPager: ViewPager = binding.viewpager
-        val textList = ArrayList<String>()
-        textList.add("Slide 1")
-        textList.add("Slide 2")
-        textList.add("Slide 3")
-
-        val mViewPagerAdapter = ViewPagerAdapter(requireContext(), textList)
-
-//        viewPager.apply {
-//            adapter = mViewPagerAdapter
-//            setPageTransformer(ViewPager2.PageTransformer { page, position ->
-//                // Apply desired transformation to the page
-//            })
-//        }
-
-        return root
+        // Call a method to load and display the images from Room
+        loadImagesFromRoom()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun loadImagesFromRoom() {
+        // Use the lifecycleScope.launch extension function to launch a coroutine
+        lifecycleScope.launch {
+            // Retrieve the image list from Room using a suspend function
+            val imageList = getImageListFromRoom()
+
+            // Update the adapter with the new image list
+            imageAdapter.updateImageList(imageList)
+        }
     }
+
+    private suspend fun getImageListFromRoom(): List<Image> {
+        // Get an instance of your Room database
+        val database = Room.databaseBuilder(
+            requireContext(),
+            ImagesDatabase::class.java,
+            "images_database"
+        ).build()
+
+        // Access the image DAO from the database
+        val imageDao = database.imageDao()
+
+        // Retrieve the image list using the DAO method
+        return imageDao.getAllImages()
+    }
+
 }
