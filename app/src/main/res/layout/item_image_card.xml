@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="15dp"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -15,7 +16,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="560dp"
+            android:layout_height="550dp"
             android:background="#E8D4D4">
 
             <ImageView
@@ -37,6 +38,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:text="Category 1"
+                android:textStyle="bold"
+
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/iv1"
                 app:layout_constraintTop_toTopOf="@id/iv1"
                 tools:ignore="HardcodedText" />
@@ -71,6 +75,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="Category 2"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+
                 app:layout_constraintStart_toEndOf="@id/iv2"
                 app:layout_constraintTop_toTopOf="@id/iv2"
                 tools:ignore="HardcodedText" />
@@ -104,6 +111,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 android:text="Category 3"
                 app:layout_constraintStart_toEndOf="@id/iv3"
                 app:layout_constraintTop_toTopOf="@id/iv3"
