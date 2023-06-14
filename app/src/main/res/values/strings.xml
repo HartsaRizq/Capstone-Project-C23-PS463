@@ -26,15 +26,4 @@
     <string name="recommendating">Collecting the best outfit recommendation for you</string>
     <string name="combination_name">Combination Name</string>
 
-    <integer-array name="data_photo">
-        <item>@drawable/ahmad_dahlan</item>
-        <item>@drawable/ahmad_yani</item>
-        <item>@drawable/bung_tomo</item>
-        <item>@drawable/gatot_subroto</item>
-        <item>@drawable/ki_hadjar_dewantara</item>
-        <item>@drawable/mohammad_hatta</item>
-        <item>@drawable/sudirman</item>
-        <item>@drawable/sukarno</item>
-        <item>@drawable/supomo</item>
-    </integer-array>
 </resources>
