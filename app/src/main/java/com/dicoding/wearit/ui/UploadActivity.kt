@@ -361,18 +361,16 @@ class UploadActivity : AppCompatActivity() {
                         red < 50 && green < 50 && blue < 50 -> "Black"
                         red > 200 && green > 200 && blue > 200 -> "White"
                         else -> {
-                            val hsv = FloatArray(3)
+                            val hsv = floatArrayOf(0f, 0f, 0f)
                             Color.RGBToHSV(red, green, blue, hsv)
-                            val hueValue = hsv[0]
-
                             when {
-                                hueValue < 5 || hueValue > 170 -> "Red"
-                                hueValue in 5f..21.999f -> "Orange"
-                                hueValue in 22f..32.999f -> "Yellow"
-                                hueValue in 33f..77.999f -> "Green"
-                                hueValue in 78f..130.999f -> "Blue"
-                                hueValue in 131f..169.999f -> "Violet"
-                                else -> "Undefined"
+                                hsv[0] < 30 || hsv[0] > 330 -> "Red"
+                                hsv[0] < 45 -> "Orange"
+                                hsv[0] < 75 -> "Yellow"
+                                hsv[0] < 165 -> "Green"
+                                hsv[0] < 255 -> "Blue"
+                                hsv[0] < 315 -> "Violet"
+                                else -> "Unknown"
                             }
                         }
                     }
