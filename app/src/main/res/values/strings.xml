@@ -26,5 +26,12 @@
     <string name="recommendating">Collecting the best outfit recommendation for you</string>
     <string name="combination_name">Combination Name</string>
     <string name="add_favorite">ADD TO FAVORITES</string>
+    <string name="category_1">Category 1</string>
+    <string name="color_1">Color 1</string>
+    <string name="category_2">Category 2</string>
+    <string name="color_2">Color 2</string>
+    <string name="category_3">Category 3</string>
+    <string name="color_3">Color 3</string>
+    <string name="add_to_favorite">ADD TO FAVORITE</string>
 
 </resources>
