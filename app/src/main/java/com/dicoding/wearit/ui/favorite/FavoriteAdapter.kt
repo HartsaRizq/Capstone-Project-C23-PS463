@@ -5,40 +5,55 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.wearit.Database.Image
 import com.dicoding.wearit.databinding.ItemFavoriteBinding
 
 data class FavoriteItem(val name: String, val imageResId: Int)
 
-class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
+class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
-    private val items = mutableListOf<FavoriteItem>()
+    private var favoriteItems: List<Image> = listOf()
+    private var onFavoriteClickListener: ((Image) -> Unit)? = null
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setItems(newItems: List<FavoriteItem>) {
-        items.clear()
-        items.addAll(newItems)
+    fun setItems(items: List<Image>) {
+        favoriteItems = items
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemFavoriteBinding.inflate(inflater, parent, false)
-        return FavoriteViewHolder(binding)
+    fun setOnFavoriteClickListener(listener: (Image) -> Unit) {
+        onFavoriteClickListener = listener
     }
 
-    override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
-        val item = items[position]
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemFavoriteBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = favoriteItems[position]
         holder.bind(item)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int {
+        return favoriteItems.size
+    }
 
-    inner class FavoriteViewHolder(private val binding: ItemFavoriteBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemFavoriteBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: FavoriteItem) {
-            binding.favoriteItemCaption.text = item.name
-            binding.favoriteItemImage.setImageResource(item.imageResId)
+        init {
+            binding.favoriteItemLoveIcon.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = favoriteItems[position]
+                    onFavoriteClickListener?.invoke(item)
+                }
+            }
+        }
+
+        fun bind(item: Image) {
+//            binding.itemName.text = item.predictedLabel
+//            binding.itemColor.text = item.color
         }
     }
 }

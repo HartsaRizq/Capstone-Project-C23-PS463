@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.dicoding.wearit.Database.Image
 import com.dicoding.wearit.databinding.FragmentFavoriteBinding
 
 class FavoriteFragment : Fragment() {
@@ -49,5 +50,17 @@ class FavoriteFragment : Fragment() {
             layoutManager = GridLayoutManager(context, 2)
             adapter = favoriteAdapter
         }
+
+        favoriteAdapter.setOnFavoriteClickListener { item ->
+            if (isItemFavorite(item)) {
+                favoriteViewModel.deleteFavoriteItem(item)
+            } else {
+                favoriteViewModel.insertFavoriteItem(item)
+            }
+        }
+    }
+
+    private fun isItemFavorite(item: Image): Boolean {
+        return favoriteViewModel.isItemFavorite(item)
     }
 }

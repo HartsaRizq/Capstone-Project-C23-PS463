@@ -1,22 +1,41 @@
 package com.dicoding.wearit.ui.favorite
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.dicoding.wearit.Database.FavoriteDatabase
+import com.dicoding.wearit.Database.FavoriteItemDao
+import com.dicoding.wearit.Database.Image
 import com.dicoding.wearit.R
-class FavoriteViewModel : ViewModel() {
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-    private val _favoriteItems = MutableLiveData<List<FavoriteItem>>()
-    val favoriteItems: LiveData<List<FavoriteItem>> = _favoriteItems
+class FavoriteViewModel(application: Application) : AndroidViewModel(application) {
+    private val favoriteItemDao: FavoriteItemDao
+    val favoriteItems: LiveData<List<Image>>
 
-//    init {
-//        val items = listOf(
-//            FavoriteItem("Item 1", R.drawable.item1),
-//            FavoriteItem("Item 2", R.drawable.item2),
-//            FavoriteItem("Item 3", R.drawable.item3),
-//            FavoriteItem("Item 4", R.drawable.item4),
-//            FavoriteItem("Item 5", R.drawable.item5)
-//        )
-//        _favoriteItems.value = items
-//    }
+    init {
+        val database = FavoriteDatabase.getDatabase(application)
+        favoriteItemDao = database.favoriteItemDao()
+        favoriteItems = favoriteItemDao.getAllFavoriteItems()
+    }
+
+    fun insertFavoriteItem(item: Image) {
+        viewModelScope.launch(Dispatchers.IO) {
+            favoriteItemDao.insertFavoriteItem(item)
+        }
+    }
+
+    fun deleteFavoriteItem(item: Image) {
+        viewModelScope.launch(Dispatchers.IO) {
+            favoriteItemDao.deleteFavoriteItem(item)
+        }
+    }
+
+    fun isItemFavorite(item: Image): Boolean {
+        return favoriteItemDao.isItemFavorite(item.id) > 0
+    }
 }
