@@ -25,5 +25,6 @@
     <string name="recognizing">Recognizing images</string>
     <string name="recommendating">Collecting the best outfit recommendation for you</string>
     <string name="combination_name">Combination Name</string>
+    <string name="add_favorite">ADD TO FAVORITES</string>
 
 </resources>

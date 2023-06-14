@@ -19,7 +19,7 @@
             android:background="#E8D4D4">
 
             <ImageView
-                android:id="@+id/slide_screen_item_iv2"
+                android:id="@+id/iv1"
                 android:layout_width="156dp"
                 android:layout_height="161dp"
                 android:src="@drawable/placeholder_image"
@@ -32,28 +32,28 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/image1_tv"
+                android:id="@+id/tvCategory1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:text="Category 1"
-                app:layout_constraintStart_toEndOf="@id/slide_screen_item_iv2"
-                app:layout_constraintTop_toTopOf="@id/slide_screen_item_iv2"
+                app:layout_constraintStart_toEndOf="@id/iv1"
+                app:layout_constraintTop_toTopOf="@id/iv1"
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/image1_tv2"
+                android:id="@+id/tvColor1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="44dp"
                 android:text="Color 1"
-                app:layout_constraintStart_toEndOf="@id/slide_screen_item_iv2"
-                app:layout_constraintTop_toTopOf="@id/slide_screen_item_iv2"
+                app:layout_constraintStart_toEndOf="@id/iv1"
+                app:layout_constraintTop_toTopOf="@id/iv1"
                 tools:ignore="HardcodedText" />
 
             <ImageView
-                android:id="@+id/slide_screen_item_iv1"
+                android:id="@+id/iv2"
                 android:layout_width="159dp"
                 android:layout_height="158dp"
                 android:src="@drawable/placeholder_image"
@@ -66,28 +66,28 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/image2_tv"
+                android:id="@+id/tvCategory2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="Category 2"
-                app:layout_constraintStart_toEndOf="@id/slide_screen_item_iv1"
-                app:layout_constraintTop_toTopOf="@id/slide_screen_item_iv1"
+                app:layout_constraintStart_toEndOf="@id/iv2"
+                app:layout_constraintTop_toTopOf="@id/iv2"
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/image2_tv2"
+                android:id="@+id/tvColor2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="44dp"
                 android:text="Color 2"
-                app:layout_constraintStart_toEndOf="@id/slide_screen_item_iv1"
-                app:layout_constraintTop_toTopOf="@id/slide_screen_item_iv1"
+                app:layout_constraintStart_toEndOf="@id/iv2"
+                app:layout_constraintTop_toTopOf="@id/iv2"
                 tools:ignore="HardcodedText" />
 
             <ImageView
-                android:id="@+id/slide_screen_item_iv3"
+                android:id="@+id/iv3"
                 android:layout_width="163dp"
                 android:layout_height="156dp"
                 android:src="@drawable/placeholder_image"
@@ -100,56 +100,41 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/image3_tv"
+                android:id="@+id/tvCategory3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="Category 3"
-                app:layout_constraintStart_toEndOf="@id/slide_screen_item_iv3"
-                app:layout_constraintTop_toTopOf="@id/slide_screen_item_iv3"
+                app:layout_constraintStart_toEndOf="@id/iv3"
+                app:layout_constraintTop_toTopOf="@id/iv3"
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/image3_tv2"
+                android:id="@+id/tvColor3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="44dp"
                 android:text="Color 3"
-                app:layout_constraintStart_toEndOf="@id/slide_screen_item_iv3"
-                app:layout_constraintTop_toTopOf="@id/slide_screen_item_iv3"
+                app:layout_constraintStart_toEndOf="@id/iv3"
+                app:layout_constraintTop_toTopOf="@id/iv3"
                 tools:ignore="HardcodedText" />
 
-            <ImageView
-                android:id="@+id/favorite_item_love_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="16dp"
-                android:src="@drawable/love_icon"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/button_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:foregroundGravity="bottom"
+                app:fabSize="normal"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_white_24px"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/add_favorite" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/slide_screen_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="80dp"
-        android:lineSpacingExtra="5dp"
-        android:text="Slide 1"
-        android:textAlignment="center"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/slide_screen_card_view"
-        tools:ignore="HardcodedText,SpUsage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

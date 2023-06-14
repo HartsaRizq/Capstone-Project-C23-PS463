@@ -294,6 +294,8 @@ class UploadActivity : AppCompatActivity() {
         return maxIndex
     }
 
+
+    // We switch to TFlite because the Cloud Computing Gave Up
     private fun uploadImage() {
         val model = ConvertedModel.newInstance(this)
         lateinit var reducedBitmap: Bitmap
@@ -349,6 +351,7 @@ class UploadActivity : AppCompatActivity() {
                     val prediction = outputFeature0.floatArray.argmax()
                     val predictedLabel = label[prediction]
 
+                    // Can't take color from the TFLite model
                     val colorCode = resized.getPixel(resized.width / 2, resized.height / 2)
                     val red = Color.red(colorCode)
                     val green = Color.green(colorCode)
@@ -358,17 +361,18 @@ class UploadActivity : AppCompatActivity() {
                         red < 50 && green < 50 && blue < 50 -> "Black"
                         red > 200 && green > 200 && blue > 200 -> "White"
                         else -> {
-                            val hsv = floatArrayOf(0f, 0f, 0f)
+                            val hsv = FloatArray(3)
                             Color.RGBToHSV(red, green, blue, hsv)
+                            val hueValue = hsv[0]
+
                             when {
-                                hsv[1] < 0.1 -> "Gray"
-                                hsv[0] < 30 || hsv[0] > 330 -> "Red"
-                                hsv[0] < 90 -> "Yellow"
-                                hsv[0] < 150 -> "Green"
-                                hsv[0] < 210 -> "Cyan"
-                                hsv[0] < 270 -> "Blue"
-                                hsv[0] < 330 -> "Magenta"
-                                else -> "Unknown"
+                                hueValue < 5 || hueValue > 170 -> "Red"
+                                hueValue in 5f..21.999f -> "Orange"
+                                hueValue in 22f..32.999f -> "Yellow"
+                                hueValue in 33f..77.999f -> "Green"
+                                hueValue in 78f..130.999f -> "Blue"
+                                hueValue in 131f..169.999f -> "Violet"
+                                else -> "Undefined"
                             }
                         }
                     }
@@ -410,7 +414,8 @@ class UploadActivity : AppCompatActivity() {
     }
 
 
-    /* This function was intentionally to be used if CC finished the task
+    /* This function was originally supposed to be used if CC finished the task
+
     private fun uploadImage() {
         val apiService = ApiConfig().getApiService()
         val uploadImageRequests = mutableListOf<Call<FileUploadResponse>>()
@@ -475,8 +480,6 @@ class UploadActivity : AppCompatActivity() {
         }
     }
      */
-
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
