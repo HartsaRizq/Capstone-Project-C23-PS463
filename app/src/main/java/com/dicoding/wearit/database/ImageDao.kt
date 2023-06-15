@@ -1,4 +1,4 @@
-package com.dicoding.wearit.Database
+package com.dicoding.wearit.database
 
 import androidx.room.Dao
 import androidx.room.Insert

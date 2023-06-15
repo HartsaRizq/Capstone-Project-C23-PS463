@@ -10,7 +10,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,8 +18,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.dicoding.wearit.Database.Image
-import com.dicoding.wearit.Database.ImagesDatabase
+import com.dicoding.wearit.database.Image
+import com.dicoding.wearit.database.ImagesDatabase
 import com.dicoding.wearit.MainActivity
 import com.dicoding.wearit.databinding.ActivityUploadBinding
 import com.dicoding.wearit.databinding.DialogLoadingBinding
@@ -351,33 +350,10 @@ class UploadActivity : AppCompatActivity() {
                     val prediction = outputFeature0.floatArray.argmax()
                     val predictedLabel = label[prediction]
 
-                    // Can't take color from the TFLite model
-                    val colorCode = resized.getPixel(resized.width / 2, resized.height / 2)
-                    val red = Color.red(colorCode)
-                    val green = Color.green(colorCode)
-                    val blue = Color.blue(colorCode)
-
-                    val color = when {
-                        red < 50 && green < 50 && blue < 50 -> "Black"
-                        red > 200 && green > 200 && blue > 200 -> "White"
-                        else -> {
-                            val hsv = floatArrayOf(0f, 0f, 0f)
-                            Color.RGBToHSV(red, green, blue, hsv)
-                            when {
-                                hsv[0] < 30 || hsv[0] > 330 -> "Red"
-                                hsv[0] < 45 -> "Orange"
-                                hsv[0] < 75 -> "Yellow"
-                                hsv[0] < 165 -> "Green"
-                                hsv[0] < 255 -> "Blue"
-                                hsv[0] < 315 -> "Violet"
-                                else -> "Unknown"
-                            }
-                        }
-                    }
 
                     val imagePath = saveImageToFile(reducedBitmap)
 
-                    val image = Image(predictedLabel = predictedLabel, color = color, imagePath = imagePath)
+                    val image = Image(predictedLabel = predictedLabel, imagePath = imagePath)
 
                     val id = imageDao.insertImage(image)
                     imageIds.add(id)

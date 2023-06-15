@@ -35,16 +35,6 @@
                 app:layout_constraintStart_toEndOf="@id/iv1"
                 app:layout_constraintTop_toTopOf="@id/iv1" />
 
-            <TextView
-                android:id="@+id/tvColor1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                tools:text="@string/color_1"
-                app:layout_constraintStart_toEndOf="@id/iv1"
-                app:layout_constraintTop_toBottomOf="@id/tvCategory1" />
-
             <ImageView
                 android:id="@+id/iv2"
                 android:layout_width="159dp"
@@ -67,16 +57,6 @@
                 app:layout_constraintStart_toEndOf="@id/iv2"
                 app:layout_constraintTop_toTopOf="@id/iv2" />
 
-            <TextView
-                android:id="@+id/tvColor2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                tools:text="@string/color_2"
-                app:layout_constraintStart_toEndOf="@id/iv2"
-                app:layout_constraintTop_toBottomOf="@id/tvCategory2" />
-
             <ImageView
                 android:id="@+id/iv3"
                 android:layout_width="163dp"
@@ -97,16 +77,6 @@
                 tools:text="@string/category_3"
                 app:layout_constraintStart_toEndOf="@id/iv3"
                 app:layout_constraintTop_toTopOf="@id/iv3" />
-
-            <TextView
-                android:id="@+id/tvColor3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                tools:text="@string/color_3"
-                app:layout_constraintStart_toEndOf="@id/iv3"
-                app:layout_constraintTop_toBottomOf="@id/tvCategory3" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/favoriteButton"

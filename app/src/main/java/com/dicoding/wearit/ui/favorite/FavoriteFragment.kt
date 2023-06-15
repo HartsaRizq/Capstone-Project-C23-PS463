@@ -5,18 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import com.dicoding.wearit.Database.Image
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.wearit.database.FavoriteOutfitDao
+import com.dicoding.wearit.database.ImagesDatabase
 import com.dicoding.wearit.databinding.FragmentFavoriteBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FavoriteFragment : Fragment() {
-
+    private lateinit var favoriteOutfitDao: FavoriteOutfitDao
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var favoriteViewModel: FavoriteViewModel
+    private lateinit var recyclerView: RecyclerView
     private lateinit var favoriteAdapter: FavoriteAdapter
 
     override fun onCreateView(
@@ -27,15 +30,20 @@ class FavoriteFragment : Fragment() {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        favoriteViewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
-
-        setupRecyclerView()
-
-        favoriteViewModel.favoriteItems.observe(viewLifecycleOwner, Observer { items ->
-            favoriteAdapter.setItems(items)
-        })
+        recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         return root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val imagesDatabase = ImagesDatabase.getInstance(requireContext())
+        favoriteOutfitDao = imagesDatabase.favoriteOutfitDao()
+
+        favoriteAdapter = FavoriteAdapter(favoriteOutfitDao)
+        recyclerView.adapter = favoriteAdapter
+
+        loadFavoriteOutfits()
     }
 
     override fun onDestroyView() {
@@ -43,24 +51,12 @@ class FavoriteFragment : Fragment() {
         _binding = null
     }
 
-    private fun setupRecyclerView() {
-        favoriteAdapter = FavoriteAdapter()
-
-        binding.favoriteRecyclerView.apply {
-            layoutManager = GridLayoutManager(context, 2)
-            adapter = favoriteAdapter
-        }
-
-        favoriteAdapter.setOnFavoriteClickListener { item ->
-            if (isItemFavorite(item)) {
-                favoriteViewModel.deleteFavoriteItem(item)
-            } else {
-                favoriteViewModel.insertFavoriteItem(item)
+    private fun loadFavoriteOutfits() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val favoriteOutfits = favoriteOutfitDao.getAllFavoriteOutfits()
+            CoroutineScope(Dispatchers.Main).launch {
+                favoriteAdapter.setData(favoriteOutfits)
             }
         }
-    }
-
-    private fun isItemFavorite(item: Image): Boolean {
-        return favoriteViewModel.isItemFavorite(item)
     }
 }

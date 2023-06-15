@@ -1,6 +1,5 @@
 package com.dicoding.wearit.ui.recommendation
 
-// In RecommendationFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +9,41 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.dicoding.wearit.Database.Image
-import com.dicoding.wearit.Database.Outfit
+import com.dicoding.wearit.database.FavoriteOutfit
+import com.dicoding.wearit.database.FavoriteOutfitDao
+import com.dicoding.wearit.database.Outfit
 import com.dicoding.wearit.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
     private var outfitList: List<Outfit> = emptyList()
+    private lateinit var favoriteOutfitDao: FavoriteOutfitDao
+
     fun setData(outfits: List<Outfit>) {
         outfitList = outfits
         notifyDataSetChanged()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val favoriteOutfits = favoriteOutfitDao.getAllFavoriteOutfits()
+            for (outfit in outfitList) {
+                outfit.isFavorite = favoriteOutfits.any { favoriteOutfit ->
+                    favoriteOutfit.outerImagePath == outfit.outer.imagePath &&
+                            favoriteOutfit.topImagePath == outfit.top.imagePath &&
+                            favoriteOutfit.bottomImagePath == outfit.bottom.imagePath
+                }
+            }
+            withContext(Dispatchers.Main) {
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun setFavoriteOutfitDao(favoriteOutfitDao: FavoriteOutfitDao) {
+        this.favoriteOutfitDao = favoriteOutfitDao
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -34,16 +60,15 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
         return outfitList.size
     }
 
-    class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val fab: FloatingActionButton = itemView.findViewById(R.id.favoriteButton)
         private val imageView1: ImageView = itemView.findViewById(R.id.iv1)
         private val imageView2: ImageView = itemView.findViewById(R.id.iv2)
         private val imageView3: ImageView = itemView.findViewById(R.id.iv3)
         private val labelTextView1: TextView = itemView.findViewById(R.id.tvCategory1)
         private val labelTextView2: TextView = itemView.findViewById(R.id.tvCategory2)
         private val labelTextView3: TextView = itemView.findViewById(R.id.tvCategory3)
-        private val colorTextView1: TextView = itemView.findViewById(R.id.tvColor1)
-        private val colorTextView2: TextView = itemView.findViewById(R.id.tvColor2)
-        private val colorTextView3: TextView = itemView.findViewById(R.id.tvColor3)
+
 
         fun bind(outfit: Outfit) {
             // Bind the data to the views
@@ -69,13 +94,69 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
             labelTextView2.text = outfit.top.predictedLabel
             labelTextView3.text = outfit.bottom.predictedLabel
 
-            colorTextView1.text = outfit.outer.color
-            colorTextView2.text = outfit.top.color
-            colorTextView3.text = outfit.bottom.color
+            if (outfit.isFavorite) {
+                fab.setImageResource(R.drawable.ic_baseline_favorite_full_white_24px)
+            } else {
+                fab.setImageResource(R.drawable.ic_baseline_favorite_border_white_24px)
+            }
+
+            fab.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val clickedOutfit = outfit
+                    if (clickedOutfit.isFavorite) {
+                        removeFavoriteOutfit(clickedOutfit)
+                    } else {
+                        addFavoriteOutfit(clickedOutfit)
+                    }
+                }
+            }
         }
 
+        private fun addFavoriteOutfit(outfit: Outfit) {
+            val favoriteOutfit = FavoriteOutfit(
+                id = outfit.favoriteOutfitId,
+                outerLabel = outfit.outer.predictedLabel,
+                topLabel = outfit.top.predictedLabel,
+                bottomLabel = outfit.bottom.predictedLabel,
+                outerImagePath = outfit.outer.imagePath,
+                topImagePath = outfit.top.imagePath,
+                bottomImagePath = outfit.bottom.imagePath,
+            )
+
+            // Insert the favorite outfit details into the favorite_outfits table
+            CoroutineScope(Dispatchers.IO).launch {
+                favoriteOutfitDao.insertFavoriteOutfit(favoriteOutfit)
+                outfit.isFavorite = true // Update the isFavorite field
+                withContext(Dispatchers.Main) {
+                    fab.setImageResource(R.drawable.ic_baseline_favorite_full_white_24px) // Update the fab button appearance
+                }
+            }
+        }
+
+        private fun removeFavoriteOutfit(outfit: Outfit) {
+            val favoriteOutfit = FavoriteOutfit(
+                id = outfit.favoriteOutfitId,
+                outerLabel = outfit.outer.predictedLabel,
+                topLabel = outfit.top.predictedLabel,
+                bottomLabel = outfit.bottom.predictedLabel,
+                outerImagePath = outfit.outer.imagePath,
+                topImagePath = outfit.top.imagePath,
+                bottomImagePath = outfit.bottom.imagePath,
+            )
+
+            // Remove the favorite outfit from the favorite_outfits table
+            CoroutineScope(Dispatchers.IO).launch {
+                favoriteOutfitDao.deleteFavoriteOutfit(favoriteOutfit)
+                outfit.isFavorite = false // Update the isFavorite field
+                withContext(Dispatchers.Main) {
+                    fab.setImageResource(R.drawable.ic_baseline_favorite_border_white_24px)
+                }
+            }
+        }
+
+
         init {
-            // Adjust the layout params of the item view to make it occupy the full width
             itemView.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT

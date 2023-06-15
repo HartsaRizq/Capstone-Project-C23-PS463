@@ -1,7 +1,6 @@
 package com.dicoding.wearit.ui.recommendation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import androidx.viewpager2.widget.ViewPager2
-import com.dicoding.wearit.Database.Image
-import com.dicoding.wearit.Database.ImageDao
-import com.dicoding.wearit.Database.ImagesDatabase
-import com.dicoding.wearit.Database.Outfit
+import com.dicoding.wearit.database.Image
+import com.dicoding.wearit.database.ImageDao
+import com.dicoding.wearit.database.ImagesDatabase
+import com.dicoding.wearit.database.Outfit
 import com.dicoding.wearit.R
+import com.dicoding.wearit.database.FavoriteOutfitDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,6 +23,7 @@ class RecommendationFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageAdapter: ImageAdapter
     private lateinit var imageDao: ImageDao
+    private lateinit var favoriteOutfitDao: FavoriteOutfitDao
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,10 +37,12 @@ class RecommendationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        imageAdapter = ImageAdapter()
-
         val imagesDatabase = ImagesDatabase.getInstance(requireContext().applicationContext)
         imageDao = imagesDatabase.imageDao()
+        favoriteOutfitDao = imagesDatabase.favoriteOutfitDao()
+
+        imageAdapter = ImageAdapter()
+        imageAdapter.setFavoriteOutfitDao(favoriteOutfitDao)
 
         lifecycleScope.launch {
             val images: List<Image> = withContext(Dispatchers.IO) {
