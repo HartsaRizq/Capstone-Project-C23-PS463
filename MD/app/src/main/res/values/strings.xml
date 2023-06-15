@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Wearit</string>
+    <string name="title_home">Home</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="title_recommendation">Recommendations</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="introduction">Introduction to this app</string>
+    <string name="recommendation">Get Recommendation</string>
+    <string name="upload_clothes">Upload your clothes</string>
+    <string name="five_clothes">(5 clothes for each category)</string>
+
+    <string name="description">Introducing "WearIt," your ultimate fashion guide! Discover your outfits combinations. Experience effortless style with WearIt—simply input your preferences and let the app work its magic. Unleash endless fashion possibilities with WearIt today!</string>
+    <string name="outerwear">Outerwear</string>
+    <string name="innerwear">Innerwear</string>
+    <string name="upload">Upload</string>
+    <string name="pants">Pants</string>
+    <string name="five_items">(5 Items)</string>
+    <string name="upload_outerwear">Upload Your Outerwear</string>
+    <string name="upload_innerwear">Upload Your Innerwear</string>
+    <string name="upload_pants">Upload Your Pants</string>
+    <string name="wait">Please Wait</string>
+    <string name="recognizing">Recognizing images</string>
+    <string name="recommendating">Collecting the best outfit recommendation for you</string>
+    <string name="combination_name">Combination Name</string>
+    <string name="add_favorite">ADD TO FAVORITES</string>
+    <string name="category_1">Category 1</string>
+    <string name="color_1">Color 1</string>
+    <string name="category_2">Category 2</string>
+    <string name="color_2">Color 2</string>
+    <string name="category_3">Category 3</string>
+    <string name="color_3">Color 3</string>
+    <string name="add_to_favorite">ADD TO FAVORITE</string>
+    <string name="favorite_outfits">Favorite Outfits:</string>
+    <string name="show_recommendation">Recommendation:</string>
+
+</resources>

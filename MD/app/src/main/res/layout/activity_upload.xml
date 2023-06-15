@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.UploadActivity"
+    >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_upload_clothes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/upload_clothes"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@id/tv_upload_clothes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textSize="14sp"
+                    android:text="@string/five_clothes"/>
+
+                <TextView
+                    android:id="@+id/tvOuterwear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/outerwear"
+                    app:layout_constraintTop_toBottomOf="@id/tv_description"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="16dp"/>
+
+                <ImageView
+                    android:id="@+id/ivOut1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="24dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toBottomOf="@id/tvOuterwear"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ivOut2"
+                    app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                <ImageView
+                    android:id="@+id/ivOut2"
+                    android:tag="image2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="@id/ivOut1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                <ImageView
+                    android:id="@+id/ivOut3"
+                    android:tag="image1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="@id/ivOut1"
+                    app:layout_constraintStart_toEndOf="@id/ivOut2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                <LinearLayout
+                    android:id="@+id/llOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/ivOut2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                        <ImageView
+                            android:id="@+id/ivOut4"
+                            android:tag="image4"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginEnd="8dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+                        <ImageView
+                            android:id="@+id/ivOut5"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="8dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvInnerwear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/innerwear"
+                    app:layout_constraintTop_toBottomOf="@id/llOut"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="16dp" />
+
+                <ImageView
+                    android:id="@+id/ivIn1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="24dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toBottomOf="@id/tvInnerwear"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ivOut2"
+                    app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                <ImageView
+                    android:id="@+id/ivIn2"
+                    android:tag="image2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="@id/ivIn1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                <ImageView
+                    android:id="@+id/ivIn3"
+                    android:tag="image1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="@id/ivIn1"
+                    app:layout_constraintStart_toEndOf="@id/ivOut2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                <LinearLayout
+                    android:id="@+id/llIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/ivIn3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                        <ImageView
+                            android:id="@+id/ivIn4"
+                            android:tag="image4"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginEnd="8dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+                        <ImageView
+                            android:id="@+id/ivIn5"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="8dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvPants"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pants"
+                    app:layout_constraintTop_toBottomOf="@id/llIn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="16dp"/>
+
+                <ImageView
+                    android:id="@+id/ivPants1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="24dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toBottomOf="@id/tvPants"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ivOut2"
+                    app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                <ImageView
+                    android:id="@+id/ivPants2"
+                    android:tag="image2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="@id/ivPants1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                <ImageView
+                    android:id="@+id/ivPants3"
+                    android:tag="image1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="@id/ivPants1"
+                    app:layout_constraintStart_toEndOf="@id/ivOut2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                <LinearLayout
+                    android:id="@+id/llPants"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/ivPants3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                        <ImageView
+                            android:id="@+id/ivPants4"
+                            android:tag="image4"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginEnd="8dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+                        <ImageView
+                            android:id="@+id/ivPants5"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="8dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_baseline_add_photo_black_24dp"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnUpload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llPants"
+                    android:text="@string/upload"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
