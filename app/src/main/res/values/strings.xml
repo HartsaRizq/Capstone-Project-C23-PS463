@@ -33,5 +33,7 @@
     <string name="category_3">Category 3</string>
     <string name="color_3">Color 3</string>
     <string name="add_to_favorite">ADD TO FAVORITE</string>
+    <string name="favorite_outfits">Favorite Outfits:</string>
+    <string name="show_recommendation">Recommendation:</string>
 
 </resources>
