@@ -1,7 +1,7 @@
 
 # Capstone-Project-C23-PS463
 
-![logo fix no ellipse]([https://user-images.githubusercontent.com/55023518/121027586-4a164d80-c7d1-11eb-9432-63b89e9af](https://github.com/HartsaRizq/Capstone-Project-C23-PS463/assets/98163422/92f2bc9d-1c86-47f5-939c-38d7c707b93b)
+![WhatsApp Image 2023-05-29 at 8 09-PhotoRoom 2](https://github.com/HartsaRizq/Capstone-Project-C23-PS463/assets/98163422/2efef5cb-8f69-4cce-b7b3-a46e3a5ea0f1)
 
 The repository of Capstone Project Bangkit 2023 by Team C23-PS463
 
