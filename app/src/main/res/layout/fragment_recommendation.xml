@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:layout_marginStart="16dp"
             android:text="@string/show_recommendation"
             android:textColor="@color/black"
             android:textSize="26sp"/>

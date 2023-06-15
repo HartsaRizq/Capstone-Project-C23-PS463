@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:text="@string/favorite_outfits"
             android:textColor="@color/black"
+            android:layout_marginStart="16dp"
             android:textStyle="bold"
             android:textSize="26sp"/>
 
