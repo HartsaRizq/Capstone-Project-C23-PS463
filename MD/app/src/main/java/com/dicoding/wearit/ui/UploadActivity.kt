@@ -294,7 +294,6 @@ class UploadActivity : AppCompatActivity() {
     }
 
 
-    // We switch to TFlite because the Cloud Computing Gave Up
     private fun uploadImage() {
         val model = ConvertedModel.newInstance(this)
         lateinit var reducedBitmap: Bitmap
@@ -326,7 +325,6 @@ class UploadActivity : AppCompatActivity() {
                     val resized: Bitmap = Bitmap.createScaledBitmap(reducedBitmap, 224, 224, true)
                     val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.FLOAT32)
 
-                    // Convert resized Bitmap to ByteBuffer
                     val byteBuffer = ByteBuffer.allocateDirect(1 * 224 * 224 * 3 * 4) // 4 bytes for each float value
                     byteBuffer.order(ByteOrder.nativeOrder())
                     val pixels = IntArray(224 * 224)
@@ -341,7 +339,6 @@ class UploadActivity : AppCompatActivity() {
                     }
                     byteBuffer.rewind()
 
-                    // Load ByteBuffer into inputFeature0
                     inputFeature0.loadBuffer(byteBuffer)
 
                     val outputs = model.process(inputFeature0)
@@ -386,74 +383,6 @@ class UploadActivity : AppCompatActivity() {
         }
         return file.absolutePath
     }
-
-
-    /* This function was originally supposed to be used if CC finished the task
-
-    private fun uploadImage() {
-        val apiService = ApiConfig().getApiService()
-        val uploadImageRequests = mutableListOf<Call<FileUploadResponse>>()
-
-        val files = listOf(
-            outwear1, outwear2, outwear3, outwear4, outwear5,
-            innerwear1, innerwear2, innerwear3, innerwear4, innerwear5,
-            bottomwear1, bottomwear2, bottomwear3, bottomwear4, bottomwear5
-        )
-
-        for (file in files) {
-            if (file != null) {
-                val reducedFile = reduceFileImage(file)
-                val requestImageFile = reducedFile.asRequestBody("image/jpeg".toMediaType())
-                val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                    "photo",
-                    reducedFile.name,
-                    requestImageFile
-                )
-
-                val uploadImageRequest = apiService.uploadImage(imageMultipart)
-                uploadImageRequests.add(uploadImageRequest)
-            }
-        }
-
-        if (uploadImageRequests.isNotEmpty()) {
-            for (uploadImageRequest in uploadImageRequests) {
-                uploadImageRequest.enqueue(object : Callback<FileUploadResponse> {
-                    override fun onResponse(
-                        call: Call<FileUploadResponse>,
-                        response: Response<FileUploadResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            val responseBody = response.body()
-                            if (responseBody != null && !responseBody.error) {
-                                Toast.makeText(
-                                    this@UploadActivity,
-                                    responseBody.message,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@UploadActivity,
-                                response.message(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<FileUploadResponse>, t: Throwable) {
-                        Toast.makeText(this@UploadActivity, t.message, Toast.LENGTH_SHORT).show()
-                    }
-                })
-            }
-        } else {
-            Toast.makeText(
-                this@UploadActivity,
-                "Silakan masukkan berkas gambar terlebih dahulu.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-     */
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

@@ -124,12 +124,11 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
                 bottomImagePath = outfit.bottom.imagePath,
             )
 
-            // Insert the favorite outfit details into the favorite_outfits table
             CoroutineScope(Dispatchers.IO).launch {
                 favoriteOutfitDao.insertFavoriteOutfit(favoriteOutfit)
                 outfit.isFavorite = true // Update the isFavorite field
                 withContext(Dispatchers.Main) {
-                    fab.setImageResource(R.drawable.ic_baseline_favorite_full_white_24px) // Update the fab button appearance
+                    fab.setImageResource(R.drawable.ic_baseline_favorite_full_white_24px)
                 }
             }
         }
@@ -145,7 +144,6 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
                 bottomImagePath = outfit.bottom.imagePath,
             )
 
-            // Remove the favorite outfit from the favorite_outfits table
             CoroutineScope(Dispatchers.IO).launch {
                 favoriteOutfitDao.deleteFavoriteOutfit(favoriteOutfit)
                 outfit.isFavorite = false // Update the isFavorite field
@@ -167,7 +165,6 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
 
-        // Set the layout manager to horizontal orientation
         val layoutManager = LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.isNestedScrollingEnabled = false
